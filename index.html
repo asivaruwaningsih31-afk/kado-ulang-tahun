@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For You ♡</title>
+<style>
+  :root{
+    --night:#081426; --blue:#142b4c; --blue2:#203f68;
+    --cream:#fff8ec; --gold:#e9c98a; --pink:#f5c9d5;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; color:var(--cream);
+    font-family:Georgia,"Times New Roman",serif;
+    background:
+      radial-gradient(ellipse at 50% 0%, #284b78 0%, transparent 48%),
+      linear-gradient(160deg,#07101f,#0d1c33 60%,#172c4a);
+    overflow-x:hidden;
+  }
+  body:before{
+    content:""; position:fixed; inset:0; pointer-events:none; opacity:.55;
+    background-image:radial-gradient(#fff 1px,transparent 1px),radial-gradient(#b9d8ff 1px,transparent 1px);
+    background-size:79px 79px,113px 113px; background-position:0 0,37px 29px;
+  }
+  .wrap{width:min(900px,92%); margin:auto; padding:28px 0 60px; position:relative}
+  .tiny{letter-spacing:.28em;text-transform:uppercase;font:11px Arial,sans-serif;color:#c8d7ed}
+  h1,h2,p{margin-top:0}
+  h1{font-size:clamp(36px,7vw,66px);line-height:1.04;margin:15px 0}
+  h2{font-size:clamp(26px,5vw,39px);font-weight:normal}
+  p{line-height:1.8;color:#e1e8f3}
+  .center{text-align:center}
+  .panel{
+    background:linear-gradient(145deg,rgba(26,49,80,.94),rgba(8,20,38,.95));
+    border:1px solid rgba(233,201,138,.35); border-radius:24px;
+    padding:clamp(20px,5vw,42px); box-shadow:0 20px 70px #0005;
+    margin:22px 0;
+  }
+  button,.button{
+    border:1px solid var(--gold); border-radius:999px; padding:12px 19px;
+    background:var(--gold); color:#142239; cursor:pointer; font-weight:bold;
+    font-size:14px; transition:.2s; text-decoration:none; display:inline-block;
+  }
+  button:hover,.button:hover{transform:translateY(-2px);filter:brightness(1.06)}
+  .secondary{background:transparent;color:var(--cream);border-color:#8298b7}
+  .hidden{display:none!important}
+  .envelope-area{min-height:290px;display:grid;place-items:center}
+  .envelope{width:min(270px,75vw);height:175px;position:relative;cursor:pointer;filter:drop-shadow(0 18px 20px #0007);transition:.25s}
+  .envelope:hover{transform:translateY(-5px)}
+  .env-back{position:absolute;inset:0;background:#d9c7a8;border-radius:9px}
+  .env-front{position:absolute;inset:0;background:#b6a17e;clip-path:polygon(0 0,50% 58%,100% 0,100% 100%,0 100%);border-radius:8px}
+  .env-flap{position:absolute;inset:0;background:#eee0c5;clip-path:polygon(0 0,100% 0,50% 61%);transform-origin:top;transition:transform .65s;z-index:3}
+  .seal{position:absolute;z-index:4;left:50%;top:55%;transform:translate(-50%,-50%);background:#183253;color:#f4dca8;border:1px solid #f4dca8;border-radius:50%;width:48px;height:48px;display:grid;place-items:center;font-size:22px}
+  .letter{position:absolute;z-index:2;left:8%;right:8%;bottom:8px;height:130px;background:#fff8e9;color:#24334a;padding:15px 12px;text-align:center;transition:transform .7s;display:flex;flex-direction:column;justify-content:center}
+  .envelope.open .env-flap{transform:rotateX(180deg);z-index:1}
+  .envelope.open .letter{transform:translateY(-95px)}
+  .envelope.open .seal{opacity:0}
+  .section-title{display:flex;gap:12px;align-items:center;color:var(--gold);font:12px Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase}
+  .section-title:after{content:"";height:1px;background:#8d9cb4;opacity:.5;flex:1}
+  .calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-top:18px;text-align:center}
+  .day,.weekday{padding:9px 0;border-radius:10px;font:13px Arial,sans-serif}
+  .weekday{color:#b8cbe5;font-weight:bold}
+  .day{background:#ffffff0b;border:1px solid #ffffff12}
+  .day.special{background:var(--gold);color:#182842;font-weight:bold;box-shadow:0 0 18px #e9c98a55}
+  .musicrow{display:flex;gap:15px;align-items:center;flex-wrap:wrap}
+  .disc{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;background:repeating-radial-gradient(circle,#101b2d 0 5px,#263e60 6px 9px);border:3px solid #d8c18c;font-size:22px}
+  .disc.playing{animation:spin 4s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .photo{min-height:145px;border-radius:15px;padding:10px;background:#e8dfcf;color:#26334a;display:flex;flex-direction:column;justify-content:space-between;transform:rotate(-1deg);box-shadow:0 7px 18px #0003}
+  .photo:nth-child(2){transform:rotate(2deg);background:#d8e3ed}
+  .photo:nth-child(3){transform:rotate(-2deg);background:#e8d5dc}
+  .photo .emoji{font-size:42px;text-align:center;margin:auto}
+  .photo small{text-align:center;font:12px Arial,sans-serif}
+  .letterbox{background:#f8f0df;color:#25354c;border-radius:16px;padding:25px;line-height:1.9;white-space:pre-line}
+  .cake{font-size:76px;filter:drop-shadow(0 8px 14px #0004)}
+  footer{font:12px Arial,sans-serif;color:#a9bbd4;text-align:center;margin-top:35px}
+  input[type=file]{max-width:100%;font-size:12px}
+  .edit-note{font:12px Arial,sans-serif;color:#a9bbd4}
+  @media(max-width:540px){.gallery{grid-template-columns:1fr}.photo{min-height:120px}.calendar{gap:4px}.day,.weekday{padding:8px 0;font-size:12px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <!-- EDIT: ganti nama, tanggal, dan ucapan di bagian CONFIG di bawah -->
+  <section class="panel center" id="intro">
+    <div class="tiny">A little something, just for you</div>
+    <h1>For <span id="nameTop">Your Favorite Person</span> ♡</h1>
+    <p>There is a little surprise waiting inside.</p>
+    <div class="envelope-area">
+      <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Buka amplop">
+        <div class="env-back"></div>
+        <div class="letter"><strong>Happy Birthday!</strong><small>made with a little love</small></div>
+        <div class="env-flap"></div><div class="env-front"></div><div class="seal">♡</div>
+      </div>
+    </div>
+    <button id="openBtn">Tap to open ♡</button>
+    <p class="edit-note">klik amplopnya yaa</p>
+  </section>
+
+  <div id="content" class="hidden">
+    <section class="panel center">
+      <div class="tiny">the day my favorite person was born</div>
+      <h2 id="birthdayHeading">Happy Birthday, You!</h2>
+      <p>Hari ini spesial, karena dunia pernah menerima seseorang seperti kamu.</p>
+      <div class="section-title">your special date</div>
+      <div class="calendar" id="calendar"></div>
+      <p class="edit-note" id="dateCaption"></p>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">a song for you</div>
+      <div class="musicrow" style="margin-top:20px">
+        <div class="disc" id="disc">♫</div>
+        <div style="flex:1;min-width:160px">
+          <strong id="songTitle">A little birthday soundtrack</strong>
+          <p style="margin:5px 0;font-size:13px">Putar lagu pilihanmu sambil membaca surat ini.</p>
+          <input type="file" id="audioFile" accept="audio/*" aria-label="Pilih file musik dari laptop">
+          <p class="edit-note">Pilih file MP3 dari laptop. Musik baru diputar setelah kamu menekan tombol.</p>
+        </div>
+        <button id="musicBtn" class="secondary">▶ Play</button>
+      </div>
+      <audio id="audio"></audio>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">little memories</div>
+      <h2>Some moments, some smiles.</h2>
+      <p>Ganti emoji atau teks di kartu ini dengan kenangan kalian. Kalau punya foto, kamu bisa mengganti kartu emoji dengan gambar sendiri.</p>
+      <div class="gallery">
+        <div class="photo"><div class="emoji">🌙</div><small>you make ordinary days special</small></div>
+        <div class="photo"><div class="emoji">🪐</div><small>my favorite little universe</small></div>
+        <div class="photo"><div class="emoji">💌</div><small>a small gift, with big wishes</small></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">open when you need a smile</div>
+      <h2>A letter for you ♡</h2>
+      <div class="letterbox" id="letterText"></div>
+      <div class="center" style="margin-top:22px"><button id="wishBtn">One last wish ✨</button></div>
+      <div id="wish" class="center hidden" style="margin-top:22px">
+        <div class="cake">🎂</div>
+        <h2>Make a wish!</h2>
+        <p>Semoga tahun ini membawa banyak hal baik, ketenangan, tawa, dan orang-orang yang tulus buat kamu. Happy birthday! ♡</p>
+        <div style="font-size:25px">☾ ✦ ⋆ ˚｡⋆</div>
+      </div>
+    </section>
+    <div class="center"><button class="secondary" id="backBtn">↺ Open the surprise again</button></div>
+  </div>
+  <footer>made with care ♡ · a tiny corner of the internet, just for you</footer>
+</main>
+
+<script>
+/* ===================== CONFIG: EDIT BAGIAN INI ===================== */
+const CONFIG = {
+  recipient: "epiw", // ganti dengan nama/panggilan dia
+  birthdayDay: 18,                    // tanggal ulang tahun (1 sampai 31)
+  birthdayMonth: 10,                 // bulan: Januari=0, Februari=1, ... Desember=11
+  birthdayYear: 2026,                // tahun ulang tahun
+  songTitle: "Wonderwall -Oasis",
+  letter: `Happy birthday, you! ♡
+
+Makasih sudah jadi seseorang yang punya tempat spesial di dunia ini.
+Di hari ulang tahunmu, aku berharap kamu selalu dikelilingi hal-hal baik,
+punya banyak alasan untuk tersenyum, dan selalu ingat kalau kamu berharga.
+
+Semoga semua hal yang sedang kamu usahakan pelan-pelan menemukan jalannya.
+Jangan terlalu keras sama diri sendiri, ya. Kamu pantas bahagia,
+pantas disayang, dan pantas mendapatkan hal-hal baik.
+
+Enjoy your special day. Happy birthday once again! ♡`
+};
+/* =================== JANGAN UBAH KODE DI BAWAH =================== */
+const $ = id => document.getElementById(id);
+$("nameTop").textContent = CONFIG.recipient;
+$("birthdayHeading").textContent = `Happy Birthday, ${CONFIG.recipient}!`;
+$("songTitle").textContent = CONFIG.songTitle;
+$("letterText").textContent = CONFIG.letter;
+$("dateCaption").textContent = `${CONFIG.birthdayDay} / ${String(CONFIG.birthdayMonth+1).padStart(2,"0")} / ${CONFIG.birthdayYear} · your day, your moment`;
+function buildCalendar(){
+  const monthNames=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+  const first=new Date(CONFIG.birthdayYear,CONFIG.birthdayMonth,1).getDay();
+  const total=new Date(CONFIG.birthdayYear,CONFIG.birthdayMonth+1,0).getDate();
+  const cal=$("calendar"); cal.innerHTML="";
+  ["Min","Sen","Sel","Rab","Kam","Jum","Sab"].forEach(x=>{const e=document.createElement("div");e.className="weekday";e.textContent=x;cal.appendChild(e)});
+  for(let i=0;i<first;i++){const e=document.createElement("div");cal.appendChild(e)}
+  for(let d=1;d<=total;d++){const e=document.createElement("div");e.className="day"+(d===CONFIG.birthdayDay?" special":"");e.textContent=d;if(d===CONFIG.birthdayDay)e.title="It's your day!";cal.appendChild(e)}
+  $("dateCaption").textContent=`${CONFIG.birthdayDay} ${monthNames[CONFIG.birthdayMonth]} ${CONFIG.birthdayYear} · your day, your moment`;
+}
+buildCalendar();
+function openGift(){
+  $("envelope").classList.add("open");
+  $("openBtn").textContent="Surprise opened ♡";
+  setTimeout(()=>{$("content").classList.remove("hidden");$("content").scrollIntoView({behavior:"smooth",block:"start"})},550);
+}
+$("openBtn").addEventListener("click",openGift);
+$("envelope").addEventListener("click",openGift);
+$("envelope").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openGift()}});
+$("backBtn").addEventListener("click",()=>{ $("content").classList.add("hidden");$("envelope").classList.remove("open");$("openBtn").textContent="Tap to open ♡";window.scrollTo({top:0,behavior:"smooth"}) });
+$("wishBtn").addEventListener("click",()=>{$("wish").classList.toggle("hidden");$("wish").scrollIntoView({behavior:"smooth",block:"nearest"})});
+const audio=$("audio"), disc=$("disc"), musicBtn=$("musicBtn");
+$("audioFile").addEventListener("change",e=>{
+  const file=e.target.files[0]; if(!file)return;
+  audio.src=URL.createObjectURL(file); $("songTitle").textContent=file.name; musicBtn.textContent="▶ Play";
+});
+musicBtn.addEventListener("click",async()=>{
+  if(!audio.src){alert("Pilih file musik dari laptop dulu ya, lewat tombol Choose File.");return}
+  if(audio.paused){try{await audio.play();musicBtn.textContent="Ⅱ Pause";disc.classList.add("playing")}catch(err){alert("Musik belum bisa diputar. Coba pilih file audio lain.")}}
+  else{audio.pause();musicBtn.textContent="▶ Play";disc.classList.remove("playing")}
+});
+audio.addEventListener("ended",()=>{musicBtn.textContent="▶ Play";disc.classList.remove("playing")});
+</script>
+</body>
+</html>
